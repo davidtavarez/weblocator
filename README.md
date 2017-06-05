@@ -8,6 +8,7 @@ usage: weblocator.py [-h] -t TARGET -w WORDLIST [--validation VALIDATION]
 #### Installing weblocator
 ```bash
 git clone git@github.com:davidtavarez/weblocator.git
+cd weblocator
 pip install -r requirements.txt
 chmod +x weblocator.py
 ./weblocator.py
