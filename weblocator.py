@@ -30,14 +30,7 @@ def is_online(host):
 def is_path_available(host, path="/", validation=""):
     try:
         conn = httplib.HTTPConnection(host,80,10)
-        route = path
-        if not route.startswith('/'):
-            route = '/' + route
-        if not path.endswith('/'):
-            name, extension = os.path.splitext(path)
-            if len(extension) == 0:
-                route = route + '/'
-        conn.request("HEAD", route)
+        conn.request("HEAD", path)
         status = conn.getresponse().status
         if status == 200 or status == 401 or status == 403:
             conn.close()
@@ -59,8 +52,15 @@ def is_path_available(host, path="/", validation=""):
 
 def worker(host, words, validation=""):
     for word in words:
-        if (is_path_available(host=host, path=word, validation=validation)):
-            print_message("\t[+] http://" + host + "/" + word + "\n")
+        route = word
+        if not route.startswith('/'):
+            route = '/' + route
+        if not word.endswith('/'):
+            name, extension = os.path.splitext(word)
+            if len(extension) == 0:
+                route = route + '/'
+        if (is_path_available(host=host, path=route, validation=validation)):
+            print_message("\t[+] http://" + host  + route + "\n")
     return
 
 
