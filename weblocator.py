@@ -29,21 +29,29 @@ def is_online(host):
 
 def is_path_available(host, path="/", validation=""):
     try:
-        conn = httplib.HTTPConnection(host)
-        conn.request("HEAD", path)
-        if conn.getresponse().status != 404:
+        conn = httplib.HTTPConnection(host,80,10)
+        name, extension = os.path.splitext(path)
+        route = path
+        if len(extension) == 0:
+           route = route + "/"
+        conn.request("HEAD", "/" + route)
+        status = conn.getresponse().status
+        if status == 200 or status == 401 or status == 403:
+            conn.close()
             if (len(validation) > 0):
-                http = httplib.HTTPConnection(host)
-                http.request("GET", "/" + path)
+                http = httplib.HTTPConnection(host,80,10)
+                http.request("GET", "/" + route)
                 response = http.getresponse()
                 if response.status == 200:
                     if validation not in response.read():
+                        http.close()
                         return True
                 else:
                     return False
             else:
                 return True
-    except StandardError:
+    except Exception as e:
+        print_message("\t[ERROR WITH: "+path+"]" + e.message + "\n");
         return None
 
 
@@ -94,7 +102,7 @@ if __name__ == '__main__':
             print_message("Reading the list... ")
             file = open(args.wordlist)
             for line in file.readlines():
-                words.append([value for value in line.split()])
+                words.append([value.strip() for value in line.split()])
             file.close()
             count_paths = locale.format("%d", len(words), grouping=True)
             print_message("OK.\n\tThe selected file contains " + count_paths + " paths.\n")
@@ -105,8 +113,11 @@ if __name__ == '__main__':
                 if args.threads:
                     threads = args.threads
                 print_message("Ready to hunt using " + str(threads) + " threads.\n")
+                validation_string = ""
+                if args.validation:
+                    validation_string = args.validation
                 for list in split_list(words, threads):
-                    threading.Thread(target=worker, args=(args.target, list, args.validation)).start()
+                    threading.Thread(target=worker, args=(args.target, list, validation_string)).start()
             else:
                 print_message("ERROR: host is down.\n")
                 sys.exit()
