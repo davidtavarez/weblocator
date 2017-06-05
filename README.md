@@ -2,8 +2,8 @@
 ### Just a better dirbuster
 ```bash
 usage: weblocator.py [-h] -t TARGET -w WORDLIST [--validation VALIDATION]
-                     [--threads THREADS] [--tor-host TOR_HOST]
-                     [--tor-port TOR_PORT]
+                     [--extension EXTENSION] [--threads THREADS]
+                     [--tor-host TOR_HOST] [--tor-port TOR_PORT]
 ```
 #### Installing weblocator
 ```bash
