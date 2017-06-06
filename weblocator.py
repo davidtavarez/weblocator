@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import httplib, socket, threading, sys, argparse
+import httplib, socket, threading, sys, argparse, traceback
 import os
 import locale
 from urllib import urlopen
@@ -28,26 +28,32 @@ def is_online(host):
 
 
 def is_path_available(host, path="/", validation=""):
-    if len(path) > 0:
+    if len(validation) == 0:
         try:
-            conn = httplib.HTTPConnection(host,80,10)
+            conn = httplib.HTTPConnection(host,80,30)
             conn.request("HEAD", path)
             status = conn.getresponse().status
-            if status == 200 or status == 401 or status == 403:
+            if status == 200 or status == 401 or status == 403 or status == 302:
                 conn.close()
-                if (len(validation) > 0):
-                    http = httplib.HTTPConnection(host,80,10)
-                    http.request("GET", route)
-                    response = http.getresponse()
-                    if response.status == 200:
-                        if validation not in response.read():
-                            http.close()
-                            return True
-                    else:
-                        return False
-                else:
-                    return True
+                return True
+            else :
+                return False
         except Exception as e:
+            return None
+    else :
+        try:
+            conn = httplib.HTTPConnection(host,80,30)
+            conn.request("GET", path)
+            response = conn.getresponse()
+            if response.status == 200:
+                content = response.read()
+                if validation not in content:
+                    conn.close()
+                    return True
+                else :
+                   return False
+        except :
+            traceback.print_exc(file=sys.stdout)
             return None
     return None
 
