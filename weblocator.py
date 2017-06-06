@@ -84,6 +84,18 @@ def print_message(message):
 if __name__ == '__main__':
     locale.setlocale(locale.LC_ALL, 'en_US')
 
+    print_message(" __          __  _     _                     _              \n")
+    print_message(" \ \        / / | |   | |                   | |             \n")
+    print_message("  \ \  /\  / /__| |__ | |     ___   ___ __ _| |_ ___  _ __  \n")
+    print_message("   \ \/  \/ / _ \ '_ \| |    / _ \ / __/ _` | __/ _ \| '__| \n")
+    print_message("    \  /\  /  __/ |_) | |___| (_) | (_| (_| | || (_) | |    \n")
+    print_message("     \/  \/ \___|_.__/|______\___/ \___\__,_|\__\___/|_|    \n")
+    print_message("                                                            \n") 
+    print_message("weblocator.py - Just a better dirbuster\n")
+    print_message("Version 0.9.1\n")
+    print_message("David Tavarez (davidtavarez)\n")
+    print_message("https://github.com/davidtavarez/weblocator\n\n")
+    
     parser = argparse.ArgumentParser()
     parser.add_argument("-t", "--target", help="The URL of the TARGET to scan.", required=True)
     parser.add_argument("-w", "--wordlist", help="The paths to locate.", required=True)
@@ -96,7 +108,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if args.tor_host:
-        print_message("Opening Tor socket... ")
+        print_message(" Opening Tor socket... ")
         socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, args.tor_host, int(args.tor_port), True)
         socket.socket = socks.socksocket
         socket.create_connection = create_tor_connection
@@ -105,7 +117,7 @@ if __name__ == '__main__':
     if args.target and args.wordlist:
         if (os.path.isfile(args.wordlist)):
             words = []
-            print_message("Reading the list... ")
+            print_message(" Reading the list... ")
             file = open(args.wordlist)
             for line in file.readlines():
                 words.append(line.strip())
@@ -114,20 +126,20 @@ if __name__ == '__main__':
             print_message("OK.\n\tThe selected file contains " + count_paths + " paths.\n")
             final_list = words;
             if args.extension:
-                print_message("\tAdding extension " + args.extension + " ... ")
+                print_message("\t Adding extension " + args.extension + " ... ")
                 for path in words:
                     name, extension = os.path.splitext(path)
                     if len(extension) == 0 and not name.startswith('.') and not name.endswith('.'):
                         final_list.append(path + args.extension)
                 count_paths = locale.format("%d", len(final_list), grouping=True)
                 print_message("OK, now the list is of " + count_paths + " paths.\n")
-            print_message("Checking if " + args.target + " is online... ")
+            print_message(" Checking if " + args.target + " is online... ")
             if (is_online(args.target)):
                 print_message("OK.\n")
                 threads = 1
                 if args.threads:
                     threads = int(args.threads)
-                print_message("Hunting using " + str(threads) + " threads!\n")
+                print_message("\n Hunting paths using " + str(threads) + " threads... just wait...\n")
                 validation_string = ""
                 if args.validation:
                     validation_string = args.validation
