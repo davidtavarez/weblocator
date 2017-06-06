@@ -67,13 +67,8 @@ def worker(host, words, validation=""):
     return
 
 
-def split_list(list, parts=1):
-    length = len(list)
-    if (length > list):
-        return [list[i * length // parts: (i + 1) * length // parts]
-                for i in range(parts)]
-    else:
-        return list
+def split_list(arr, parts=1):
+    return [arr[i::parts] for i in range(parts)]
 
 
 def print_message(message):
@@ -124,9 +119,9 @@ if __name__ == '__main__':
             print_message("Checking if " + args.target + " is online... ")
             if (is_online(args.target)):
                 print_message("OK.\n")
-                threads = 10
+                threads = 1
                 if args.threads:
-                    threads = args.threads
+                    threads = int(args.threads)
                 print_message("Hunting using " + str(threads) + " threads!\n")
                 validation_string = ""
                 if args.validation:
