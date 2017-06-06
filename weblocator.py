@@ -53,7 +53,6 @@ def is_path_available(host, path="/", validation=""):
                 else :
                    return False
         except :
-            traceback.print_exc(file=sys.stdout)
             return None
     return None
 
