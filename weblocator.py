@@ -16,13 +16,14 @@ def create_tor_connection(address):
     return sock
 
 
-def worker(host, words_list, port=80, http=True, validation=None):
+def worker(host, words_list, starting_point, port=80, http=True, validation=None):
     protocol = 'http' if http else 'https'
     for word in words_list:
         if '.' not in word:
             word = '{}/'.format(word)
-        if is_path_available(host=host, url_path=word, validation=validation, http=http, port=port):
-            print_message("\t[+] {}://{}/{}\n".format(protocol, host, word))
+        if is_path_available(host=host, url_path=word, starting_point=starting_point, http=http, port=port,
+                             validation=validation, ):
+            print_message("\t[+] {}://{}:{}{}{}\n".format(protocol, host, port, starting_point, word))
     return
 
 
@@ -45,10 +46,11 @@ if __name__ == '__main__':
     parser.add_argument("-w", "--wordslist", help="The words list path.", required=True)
     parser.add_argument("-p", "--port", help="The words list path.", required=True)
     parser.add_argument("-o", "--protocol", help="Protocol (http or https).", required=True)
+    parser.add_argument("-s", "--starting", help="Starting point (/).", required=True)
 
     parser.add_argument("--validation", help="Try to find a string to validate the results.", required=False)
     parser.add_argument("--extension", help="Add an extension.", required=False)
-    parser.add_argument("--threads", help="Number of threads [default=10].", required=False)
+    parser.add_argument("--threads", help="Number of threads [default=1].", required=False)
     parser.add_argument("--tor-host", help="Tor server.", required=False)
     parser.add_argument("--tor-port", help="Tor port server.", required=False)
 
@@ -99,7 +101,7 @@ if __name__ == '__main__':
 
     print_message("OK.\n\tThe selected file contains " + str(len(words)) + " paths.\n")
 
-    threads = 10
+    threads = 1
     if args.threads:
         threads = int(args.threads)
     print_message("Hunting paths using " + str(threads) + " threads... just wait...\n")
@@ -108,5 +110,9 @@ if __name__ == '__main__':
     if args.port:
         port = int(args.port)
 
+    starting = '/'
+    if args.starting:
+        starting = args.starting
+
     for portion in split_list(words, threads):
-        threading.Thread(target=worker, args=(args.target, portion, port, http, args.validation)).start()
+        threading.Thread(target=worker, args=(args.target, portion, starting, port, http, args.validation)).start()
