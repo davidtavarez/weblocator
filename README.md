@@ -13,10 +13,10 @@ Version 1.0
 David Tavarez (davidtavarez)
 https://github.com/davidtavarez/weblocator
 
-usage: weblocator.py [-h] -t TARGET -w WORDSLIST -p PORT -o PROTOCOL
-                     [--validation VALIDATION] [--extension EXTENSION]
-                     [--threads THREADS] [--tor-host TOR_HOST]
-                     [--tor-port TOR_PORT]
+usage: weblocator.py [-h] -t TARGET -w WORDSLIST -p PORT -o PROTOCOL -s
+                     STARTING [--validation VALIDATION]
+                     [--extension EXTENSION] [--threads THREADS]
+                     [--tor-host TOR_HOST] [--tor-port TOR_PORT]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -27,11 +27,13 @@ optional arguments:
   -p PORT, --port PORT  The words list path.
   -o PROTOCOL, --protocol PROTOCOL
                         Protocol (http or https).
+  -s STARTING, --starting STARTING
+                        Starting point (/).
   --validation VALIDATION
                         Try to find a string to validate the results.
   --extension EXTENSION
                         Add an extension.
-  --threads THREADS     Number of threads [default=10].
+  --threads THREADS     Number of threads [default=1].
   --tor-host TOR_HOST   Tor server.
   --tor-port TOR_PORT   Tor port server.
 ```
