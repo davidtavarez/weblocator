@@ -1,5 +1,5 @@
-# weblocator
-### Just a better dirbuster
+# WebLocator
+### Just another DirBuster
 ```bash
  __          __  _     _                     _              
  \ \        / / | |   | |                   | |             
@@ -8,21 +8,25 @@
     \  /\  /  __/ |_) | |___| (_) | (_| (_| | || (_) | |    
      \/  \/ \___|_.__/|______\___/ \___\__,_|\__\___/|_|    
                                                             
-weblocator.py - Just a better dirbuster
-Version 0.9.1
+weblocator.py - Just another DirBuster
+Version 1.0
 David Tavarez (davidtavarez)
 https://github.com/davidtavarez/weblocator
 
-usage: weblocator.py [-h] -t TARGET -w WORDLIST [--validation VALIDATION]
-                     [--extension EXTENSION] [--threads THREADS]
-                     [--tor-host TOR_HOST] [--tor-port TOR_PORT]
+usage: weblocator.py [-h] -t TARGET -w WORDSLIST -p PORT -o PROTOCOL
+                     [--validation VALIDATION] [--extension EXTENSION]
+                     [--threads THREADS] [--tor-host TOR_HOST]
+                     [--tor-port TOR_PORT]
 
 optional arguments:
   -h, --help            show this help message and exit
   -t TARGET, --target TARGET
                         The URL of the TARGET to scan.
-  -w WORDLIST, --wordlist WORDLIST
-                        The paths to locate.
+  -w WORDSLIST, --wordslist WORDSLIST
+                        The words list path.
+  -p PORT, --port PORT  The words list path.
+  -o PROTOCOL, --protocol PROTOCOL
+                        Protocol (http or https).
   --validation VALIDATION
                         Try to find a string to validate the results.
   --extension EXTENSION
@@ -35,6 +39,8 @@ optional arguments:
 ```bash
 git clone git@github.com:davidtavarez/weblocator.git
 cd weblocator
+virtualenv venv
+source venv/bin/activate
 pip install -r requirements.txt
 chmod +x weblocator.py
 ./weblocator.py
